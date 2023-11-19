@@ -1,7 +1,6 @@
 package com.cau.designpattern.repository;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.springframework.stereotype.Repository;
 
@@ -38,7 +37,7 @@ public class TestRepositoryImpl implements TestRepository {
 
 			connection.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException();
 		}
 	}
 
@@ -48,7 +47,6 @@ public class TestRepositoryImpl implements TestRepository {
 		try {
 			JDBCConnection connection = holubSqlConfig.getConnection();
 			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-
 			ResultSet rs = stmt.executeQuery(
 				"SELECT * FROM address WHERE addrId = " + addrId); // sql 인젝션 위험 - PreparedStatement로 바꾸면 짱일듯
 			rs.next();
@@ -65,7 +63,7 @@ public class TestRepositoryImpl implements TestRepository {
 			connection.close();
 
 			return address;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			throw new RuntimeException();
 		}
 	}
