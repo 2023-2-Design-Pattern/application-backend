@@ -33,7 +33,6 @@ public class GameBoardRepositoryImpl implements GameBoardRepository {
 			GameBoardEntity gameBoard = GameBoardEntity.builder()
 				.gameBoardId(rs.getLong("gameBoardId"))
 				.data(rs.getString("data"))
-				.itemData(rs.getString("itemData"))
 				.build();
 			stmt.close();
 

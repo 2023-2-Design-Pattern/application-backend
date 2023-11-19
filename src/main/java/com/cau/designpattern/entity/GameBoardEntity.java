@@ -13,8 +13,6 @@ public class GameBoardEntity {
 
 	private String data;
 
-	private String itemData;
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
