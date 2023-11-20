@@ -25,7 +25,16 @@ public class HolubSqlConfig {
 	}
 
 	public JDBCConnection getConnection() throws SQLException {
-		return (JDBCConnection)DriverManager.getConnection(
-			"file://" + new FileSystemResource("").getFile().getAbsolutePath() + "/" + dbPath);
+		String path;
+		String os = System.getProperty("os.name").toLowerCase();
+
+		if(os.contains("win")) {
+			path = "file:/" + new FileSystemResource("").getFile().
+					getAbsolutePath().replace("\\", "/") + "/" + dbPath;
+		} else {
+			path = "file://" + new FileSystemResource("").getFile().getAbsolutePath() + "/" + dbPath;
+		}
+
+		return (JDBCConnection)DriverManager.getConnection(path);
 	}
 }
