@@ -1,6 +1,8 @@
 package com.cau.designpattern.controller;
 
+import com.cau.designpattern.dto.ItemDto;
 import com.cau.designpattern.service.ItemService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -9,5 +11,11 @@ public class ItemControllerImpl implements ItemController {
 
     public ItemControllerImpl(ItemService itemService) {
         this.itemService = itemService;
+    }
+
+    @Override
+    @GetMapping("/item/get")
+    public ItemDto.GetItemRes getItem(ItemDto.GetItemReq getItemReq) {
+        return null;
     }
 }
