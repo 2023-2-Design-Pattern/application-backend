@@ -16,6 +16,6 @@ public class ItemControllerImpl implements ItemController {
     @Override
     @GetMapping("/item/get")
     public ItemDto.GetItemRes getItem(ItemDto.GetItemReq getItemReq) {
-        return null;
+        return itemService.getItem(getItemReq);
     }
 }
