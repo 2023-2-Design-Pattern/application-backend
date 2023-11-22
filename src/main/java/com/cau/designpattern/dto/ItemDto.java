@@ -12,7 +12,7 @@ public class ItemDto {
     public static class GetItemReq {
         private String name;
         private long round;
-        private int itemId;
+        private long itemId;
     }
 
     @Getter
@@ -25,8 +25,8 @@ public class ItemDto {
         @Builder
         @ToString
         public static class Item {
-            private int userGameItemId;
-            private int itemId;
+            private long userGameItemId;
+            private long itemId;
         }
     }
 }
