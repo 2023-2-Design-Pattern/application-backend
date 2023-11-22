@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UserGameItemRepository {
     public List<UserGameItemEntity> getAllUserGameItems(long userGameId);
+
 }
