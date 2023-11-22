@@ -3,6 +3,7 @@ package com.cau.designpattern.controller;
 import com.cau.designpattern.dto.ItemDto;
 import com.cau.designpattern.service.ItemService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,7 +16,7 @@ public class ItemControllerImpl implements ItemController {
 
     @Override
     @GetMapping("/item/get")
-    public ItemDto.GetItemRes getItem(ItemDto.GetItemReq getItemReq) {
+    public ItemDto.GetItemRes getItem(@RequestBody ItemDto.GetItemReq getItemReq) {
         return itemService.getItem(getItemReq);
     }
 }

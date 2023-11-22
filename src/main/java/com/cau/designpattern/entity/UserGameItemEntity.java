@@ -19,11 +19,12 @@ public class UserGameItemEntity {
         if (o == null || getClass() != o.getClass())
             return false;
         UserGameItemEntity that = (UserGameItemEntity)o;
-        return userGameItemId == that.userGameItemId;
+        return userGameItemId == that.userGameItemId &&
+                userGameId == that.userGameId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userGameItemId);
+        return Objects.hash(userGameItemId, userGameId);
     }
 }
