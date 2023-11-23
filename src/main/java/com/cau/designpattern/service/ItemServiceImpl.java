@@ -7,6 +7,7 @@ import com.cau.designpattern.repository.UserGameRepository;
 import com.cau.designpattern.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,7 +25,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private ItemDto.GetItemRes getAllUserGameItemsResponse(long userGameId) {
-        List<ItemDto.GetItemRes.Item> items = null;
+        List<ItemDto.GetItemRes.Item> items = new ArrayList<>();
         List<UserGameItemEntity> list = userGameItemRepository.getAllUserGameItems(userGameId);
 
         for(UserGameItemEntity userGameItem : list) {
