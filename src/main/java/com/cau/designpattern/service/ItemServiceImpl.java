@@ -48,7 +48,7 @@ public class ItemServiceImpl implements ItemService {
         long userGameId = userGameRepository.findByUserIdAndGameBoardId(userId, getItemReq.getRound())
                 .orElseThrow(RuntimeException::new).getUserGameId();
 
-        
+        userGameItemRepository.getItem(userGameId, getItemReq.getItemId());
 
         return getAllUserGameItemsResponse(userGameId);
     }

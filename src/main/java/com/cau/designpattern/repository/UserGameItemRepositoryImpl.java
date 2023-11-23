@@ -50,4 +50,33 @@ public class UserGameItemRepositoryImpl implements UserGameItemRepository {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public void getItem(long userGameId, long itemId) {
+        try {
+            JDBCConnection connection = holubSqlConfig.getConnection();
+
+            JDBCStatement stmt = (JDBCStatement)connection.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                    String.format("SELECT * FROM userGameItem WHERE userGameId = %d ORDER BY userGameItemId ASC)", userGameId));
+
+            long userGameItemId = 1;
+            while(rs.next()) {
+                if (userGameItemId < rs.getLong("userGameItemId")) {
+                    break;
+                }
+                userGameItemId++;
+            }
+            stmt.executeUpdate(
+                    String.format("INSERT INTO userGameItem VALUES (%d, %d, %d)", userGameItemId, userGameId, itemId)
+            );
+            stmt.close();
+
+            connection.close();
+        } catch (NullPointerException e) {
+
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
 }
