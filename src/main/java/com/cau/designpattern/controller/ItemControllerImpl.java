@@ -19,4 +19,10 @@ public class ItemControllerImpl implements ItemController {
     public ItemDto.ItemRes getItem(@RequestBody ItemDto.GetItemReq getItemReq) {
         return itemService.getItem(getItemReq);
     }
+
+    @Override
+    @GetMapping("/item/use")
+    public ItemDto.ItemRes useItem(@RequestBody ItemDto.UseItemReq useItemReq) {
+        return itemService.useItem(useItemReq);
+    }
 }

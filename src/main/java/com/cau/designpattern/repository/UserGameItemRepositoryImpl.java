@@ -73,8 +73,24 @@ public class UserGameItemRepositoryImpl implements UserGameItemRepository {
             stmt.close();
 
             connection.close();
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
 
+    @Override
+    public void useItem(long userGameItemId, long userGameId) {
+        try {
+            JDBCConnection connection = holubSqlConfig.getConnection();
+
+            JDBCStatement stmt = (JDBCStatement)connection.createStatement();
+            stmt.executeUpdate(
+                    String.format("DELETE FROM userGameItem WHERE userGameItemId = %d AND userGameId = %d",
+                            userGameItemId, userGameId)
+            );
+            stmt.close();
+
+            connection.close();
         } catch (Exception e) {
             throw new RuntimeException();
         }

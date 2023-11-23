@@ -53,4 +53,16 @@ public class ItemServiceImpl implements ItemService {
 
         return getAllUserGameItemsResponse(userGameId);
     }
+
+    @Override
+    public ItemDto.ItemRes useItem(ItemDto.UseItemReq useItemReq) {
+        long userId = userRepository.getOneByName(useItemReq.getName())
+                .orElseThrow(RuntimeException::new).getUserId();
+        long userGameId = userGameRepository.findByUserIdAndGameBoardId(userId, useItemReq.getRound())
+                .orElseThrow(RuntimeException::new).getUserGameId();
+
+        userGameItemRepository.useItem(useItemReq.getUserGameItemId(), userGameId);
+
+        return getAllUserGameItemsResponse(userGameId);
+    }
 }
