@@ -95,4 +95,44 @@ public class UserGameItemRepositoryImpl implements UserGameItemRepository {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public void rushItem(long userGameItemId1, long userGameItemId2, long userGameId) {
+        try {
+            if (userGameItemId1 == userGameItemId2) {
+                throw new RuntimeException();
+            }
+
+            JDBCConnection connection = holubSqlConfig.getConnection();
+
+            JDBCStatement stmt = (JDBCStatement)connection.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                    String.format("SELECT * FROM userGameItem WHERE userGameId = %d)", userGameId));
+
+            int check = 2;
+            while(rs.next()) {
+                long userGameItemId = rs.getLong("userGameItemId");
+                if (userGameItemId == userGameItemId1 || userGameItemId == userGameItemId2) {
+                    check--;
+                }
+            }
+            if (check != 0) {
+                throw new RuntimeException();
+            }
+
+            long rushItemId = 6; //합성 아이템 구하는 코드 추가 예정
+
+            stmt.executeUpdate(
+                    String.format("DELETE FROM userGameItem WHERE userGameItemId = %d OR userGameItemId = %d",
+                            userGameItemId1, userGameItemId2)
+            );
+            stmt.close();
+
+            connection.close();
+
+            getItem(userGameId, rushItemId);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
 }

@@ -65,4 +65,16 @@ public class ItemServiceImpl implements ItemService {
 
         return getAllUserGameItemsResponse(userGameId);
     }
+
+    @Override
+    public ItemDto.ItemRes rushItem(ItemDto.RushItemReq rushItemReq) {
+        long userId = userRepository.getOneByName(rushItemReq.getName())
+                .orElseThrow(RuntimeException::new).getUserId();
+        long userGameId = userGameRepository.findByUserIdAndGameBoardId(userId, rushItemReq.getRound())
+                .orElseThrow(RuntimeException::new).getUserGameId();
+
+        userGameItemRepository.rushItem(rushItemReq.getUserGameItemId1(), rushItemReq.getUserGameItemId2(), userGameId);
+
+        return getAllUserGameItemsResponse(userGameId);
+    }
 }

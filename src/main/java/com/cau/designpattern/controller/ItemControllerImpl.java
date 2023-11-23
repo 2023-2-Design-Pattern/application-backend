@@ -23,4 +23,10 @@ public class ItemControllerImpl implements ItemController {
     public ItemDto.ItemRes useItem(@RequestBody ItemDto.UseItemReq useItemReq) {
         return itemService.useItem(useItemReq);
     }
+
+    @Override
+    @PostMapping("item/rush")
+    public ItemDto.ItemRes rushItem(@RequestBody ItemDto.RushItemReq rushItemReq) {
+        return itemService.rushItem(rushItemReq);
+    }
 }
