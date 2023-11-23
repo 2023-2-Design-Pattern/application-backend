@@ -24,18 +24,18 @@ public class ItemServiceImpl implements ItemService {
         this.userGameRepository = userGameRepository;
     }
 
-    private ItemDto.GetItemRes getAllUserGameItemsResponse(long userGameId) {
-        List<ItemDto.GetItemRes.Item> items = new ArrayList<>();
+    private ItemDto.ItemRes getAllUserGameItemsResponse(long userGameId) {
+        List<ItemDto.ItemRes.Item> items = new ArrayList<>();
         List<UserGameItemEntity> list = userGameItemRepository.getAllUserGameItems(userGameId);
 
         for(UserGameItemEntity userGameItem : list) {
-            ItemDto.GetItemRes.Item item = ItemDto.GetItemRes.Item.builder()
+            ItemDto.ItemRes.Item item = ItemDto.ItemRes.Item.builder()
                     .userGameItemId(userGameItem.getUserGameItemId())
                     .itemId(userGameItem.getItemId())
                     .build();
             items.add(item);
         }
-        ItemDto.GetItemRes res = ItemDto.GetItemRes.builder()
+        ItemDto.ItemRes res = ItemDto.ItemRes.builder()
                 .items(items)
                 .build();
 
@@ -43,7 +43,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto.GetItemRes getItem(ItemDto.GetItemReq getItemReq) {
+    public ItemDto.ItemRes getItem(ItemDto.GetItemReq getItemReq) {
         long userId = userRepository.getOneByName(getItemReq.getName())
                 .orElseThrow(RuntimeException::new).getUserId();
         long userGameId = userGameRepository.findByUserIdAndGameBoardId(userId, getItemReq.getRound())

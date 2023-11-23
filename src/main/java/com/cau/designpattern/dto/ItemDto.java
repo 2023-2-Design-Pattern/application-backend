@@ -18,7 +18,7 @@ public class ItemDto {
     @Getter
     @Builder
     @ToString
-    public static class GetItemRes {
+    public static class ItemRes {
         private List<Item> items;
 
         @Getter
