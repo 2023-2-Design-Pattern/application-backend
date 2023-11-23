@@ -2,9 +2,7 @@ package com.cau.designpattern.controller;
 
 import com.cau.designpattern.dto.ItemDto;
 import com.cau.designpattern.service.ItemService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ItemControllerImpl implements ItemController {
@@ -15,13 +13,13 @@ public class ItemControllerImpl implements ItemController {
     }
 
     @Override
-    @GetMapping("/item/get")
+    @PostMapping("/item/get")
     public ItemDto.ItemRes getItem(@RequestBody ItemDto.GetItemReq getItemReq) {
         return itemService.getItem(getItemReq);
     }
 
     @Override
-    @GetMapping("/item/use")
+    @DeleteMapping("/item/use")
     public ItemDto.ItemRes useItem(@RequestBody ItemDto.UseItemReq useItemReq) {
         return itemService.useItem(useItemReq);
     }
