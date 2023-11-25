@@ -110,17 +110,23 @@ public class UserGameItemRepositoryImpl implements UserGameItemRepository {
                     String.format("SELECT * FROM userGameItem WHERE userGameId = %d)", userGameId));
 
             int check = 2;
+            long itemId1 = 0;
+            long itemId2 = 0;
             while(rs.next()) {
                 long userGameItemId = rs.getLong("userGameItemId");
-                if (userGameItemId == userGameItemId1 || userGameItemId == userGameItemId2) {
+                if (userGameItemId == userGameItemId1) {
+                    itemId1 = rs.getLong("itemId");
+                    check--;
+                } else if (userGameItemId == userGameItemId2) {
+                    itemId2 = rs.getLong("itemId");
                     check--;
                 }
             }
-            if (check != 0) {
+            if (check != 0 || itemId1 != itemId2) {
                 throw new RuntimeException();
             }
 
-            long rushItemId = 6; //합성 아이템 구하는 코드 추가 예정
+            long rushItemId = itemId1 + 3;
 
             stmt.executeUpdate(
                     String.format("DELETE FROM userGameItem WHERE userGameItemId = %d OR userGameItemId = %d",
