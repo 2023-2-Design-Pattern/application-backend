@@ -21,7 +21,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.projectlombok:lombok'
     implementation 'junit:junit:4.13.1'
-    implementation 'com.github.2023-2-Design-Pattern:Term-Project:0.2.2'
+    implementation 'com.github.2023-2-Design-Pattern:Term-Project:0.3.5'
 
     annotationProcessor 'org.projectlombok:lombok'
 
