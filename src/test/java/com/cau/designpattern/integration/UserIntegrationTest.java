@@ -10,18 +10,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class TestIntegrationTest {
+class UserIntegrationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -44,19 +46,18 @@ class TestIntegrationTest {
 	}
 
 	@Test
-	void getByAddrId() throws Exception {
+	@DisplayName("로그인")
+	void loginTest() throws Exception {
 
-		mockMvc.perform(get("/test/{id}", "1"))
+		mockMvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\n"
+					+ "    \"name\":\"kmss\"\n"
+					+ "}"))
 			.andExpect(status().isOk())
-			.andExpect(content().json(
-				"{\n"
-					+ "    \"addrId\": 1,\n"
-					+ "    \"street\": \"34 Quarry Ln.\",\n"
-					+ "    \"city\": \"Bedrock\",\n"
-					+ "    \"state\": \"AZ\",\n"
-					+ "    \"zip\": \"00000\"\n"
-					+ "}"
-			))
-		;
+			.andExpect(content().json("{\n"
+				+ "    \"round\": 4\n"
+				+ "}"
+			));
 	}
 }
