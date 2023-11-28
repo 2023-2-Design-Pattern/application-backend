@@ -20,9 +20,11 @@ public class JDBCUtil {
 
 		try {
 			ResultSet rs = stmt.executeQuery(
-				String.format("SELECT %sId FROM %s ORDER BY %sId DESC", tableName, tableName, tableName));
-			rs.next();
-			long id = rs.getLong(String.format("%sId", tableName)) + 1;
+				String.format("SELECT %sId FROM %s", tableName, tableName));
+			long id = 0;
+			while (rs.next()) // order by 오류로 임시방편
+				id = rs.getLong(String.format("%sId", tableName)) + 1;
+
 			stmt.close();
 			return id;
 		} catch (NullPointerException | SQLException e) { // Table이 비어있으면 id는 0부터 시작
