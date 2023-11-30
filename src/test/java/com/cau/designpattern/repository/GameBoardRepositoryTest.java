@@ -1,4 +1,4 @@
-package repository;
+package com.cau.designpattern.repository;
 
 import static java.nio.file.StandardCopyOption.*;
 import static org.assertj.core.api.Assertions.*;
