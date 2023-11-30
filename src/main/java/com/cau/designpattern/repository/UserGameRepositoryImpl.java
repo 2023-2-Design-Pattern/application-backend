@@ -46,14 +46,14 @@ public class UserGameRepositoryImpl implements UserGameRepository {
 			connection.close();
 
 			boolean isClear = false;
-			while (rs.next()) {
+			do {
 				if (rs.getLong("gameBoardId") != lastGameBoardId)
 					break;
 				if (rs.getInt("status") != 2)
 					continue;
 				isClear = true;
 				break;
-			}
+			} while (rs.next());
 
 			return lastGameBoardId + (isClear ? 1 : 0);
 
