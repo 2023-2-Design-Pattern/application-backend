@@ -7,6 +7,7 @@ import com.holub.database.jdbc.JDBCStatement;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,11 @@ public class UserGameItemRepositoryImpl implements UserGameItemRepository {
             JDBCConnection connection = holubSqlConfig.getConnection();
 
             JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-            ResultSet rs = stmt.executeQuery(
-                    String.format("SELECT * FROM userGameItem WHERE userGameId = %d ORDER BY userGameItemId ASC)", userGameId));
+            PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM userGameItem WHERE userGameId = ? ORDER BY userGameItemId ASC)");
+            pstmt.setLong(1, userGameId);
+            ResultSet rs = pstmt.executeQuery();
+//            ResultSet rs = stmt.executeQuery(
+//                    String.format("SELECT * FROM userGameItem WHERE userGameId = %d ORDER BY userGameItemId ASC)", userGameId));
 
             while(rs.next()) {
                 UserGameItemEntity userGameItemEntity = UserGameItemEntity.builder()
@@ -57,8 +61,11 @@ public class UserGameItemRepositoryImpl implements UserGameItemRepository {
             JDBCConnection connection = holubSqlConfig.getConnection();
 
             JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-            ResultSet rs = stmt.executeQuery(
-                    String.format("SELECT * FROM userGameItem WHERE userGameId = %d ORDER BY userGameItemId ASC)", userGameId));
+            PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM userGameItem WHERE userGameId = ? ORDER BY userGameItemId ASC)");
+            pstmt.setLong(1, userGameId);
+            ResultSet rs = pstmt.executeQuery();
+//            ResultSet rs = stmt.executeQuery(
+//                    String.format("SELECT * FROM userGameItem WHERE userGameId = %d ORDER BY userGameItemId ASC)", userGameId));
 
             long userGameItemId = 1;
             while(rs.next()) {

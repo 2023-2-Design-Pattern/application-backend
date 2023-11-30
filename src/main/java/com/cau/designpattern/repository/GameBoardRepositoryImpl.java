@@ -1,5 +1,6 @@
 package com.cau.designpattern.repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import org.springframework.stereotype.Repository;
@@ -27,8 +28,11 @@ public class GameBoardRepositoryImpl implements GameBoardRepository {
 			JDBCConnection connection = holubSqlConfig.getConnection();
 
 			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-			ResultSet rs = stmt.executeQuery(
-				String.format("SELECT * FROM gameBoard WHERE gameBoardId = %d", gameBoardId));
+			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM gameBoard WHERE gameBoardId = ?");
+			pstmt.setLong(1, gameBoardId);
+			ResultSet rs = pstmt.executeQuery();
+//			ResultSet rs = stmt.executeQuery(
+//					String.format("SELECT * FROM gameBoard WHERE gameBoardId = %d", gameBoardId));
 			rs.next();
 			GameBoardEntity gameBoard = GameBoardEntity.builder()
 				.gameBoardId(rs.getLong("gameBoardId"))

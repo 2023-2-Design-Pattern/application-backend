@@ -1,5 +1,6 @@
 package com.cau.designpattern.repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import org.springframework.stereotype.Repository;
@@ -31,16 +32,19 @@ public class UserGameBoardRepositoryImpl implements UserGameBoardRepository {
 		try {
 			JDBCConnection connection = holubSqlConfig.getConnection();
 
-			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-			ResultSet rs = stmt.executeQuery(
-				String.format("SELECT * FROM userGameBoard WHERE userGameBoardId = %d", userGameBoardId));
+//			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
+			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM userGameBoard WHERE userGameBoardId = ?");
+			pstmt.setLong(1, userGameBoardId);
+			ResultSet rs = pstmt.executeQuery();
+//			ResultSet rs = stmt.executeQuery(
+//				String.format("SELECT * FROM userGameBoard WHERE userGameBoardId = %d", userGameBoardId));
 			rs.next();
 			UserGameBoardEntity userGameBoard = UserGameBoardEntity.builder()
 				.userGameBoardId(rs.getLong("userGameBoardId"))
 				.data(rs.getString("data"))
 				.build();
-			stmt.close();
-
+//			stmt.close();
+			pstmt.close();
 			connection.close();
 
 			return userGameBoard;
@@ -56,13 +60,18 @@ public class UserGameBoardRepositoryImpl implements UserGameBoardRepository {
 			JDBCConnection connection = holubSqlConfig.getConnection();
 
 			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
+			PreparedStatement pstmt = connection.prepareStatement("INSERT INTO userGameBoard VALUES ( ? , ?)");
 
 			long userGameBoardId = JDBCUtil.generateId(stmt, "userGameBoard");
 
 			stmt = (JDBCStatement)connection.createStatement();
 			String data = gameBoardRepository.getById(gameBoardId).getData();
-			stmt.executeUpdate(String.format("INSERT INTO userGameBoard VALUES (%d, '%s')", userGameBoardId, data));
-			stmt.close();
+			pstmt.setLong(1, userGameBoardId);
+			pstmt.setString(2, data);
+			pstmt.executeUpdate();
+//			stmt.executeUpdate(String.format("INSERT INTO userGameBoard VALUES (%d, '%s')", userGameBoardId, data));
+//			stmt.close();
+			pstmt.close();
 
 			connection.close();
 
@@ -78,10 +87,14 @@ public class UserGameBoardRepositoryImpl implements UserGameBoardRepository {
 		try {
 			JDBCConnection connection = holubSqlConfig.getConnection();
 			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-			stmt.executeUpdate(
-				String.format("UPDATE userGameBoard SET data = '%s' WHERE userGameBoardId = %d", data, userGameBoardId));
-			stmt.close();
-
+			PreparedStatement pstmt = connection.prepareStatement("UPDATE userGameBoard SET data = ? WHERE userGameBoardId = ?");
+			pstmt.setString(1, data);
+			pstmt.setLong(2, userGameBoardId);
+			pstmt.executeUpdate();
+//			stmt.executeUpdate(
+//				String.format("UPDATE userGameBoard SET data = '%s' WHERE userGameBoardId = %d", data, userGameBoardId));
+//			stmt.close();
+			pstmt.close();
 			connection.close();
 
 		} catch (Exception e) {

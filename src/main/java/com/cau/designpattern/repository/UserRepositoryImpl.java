@@ -1,5 +1,6 @@
 package com.cau.designpattern.repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Optional;
 
@@ -43,15 +44,18 @@ public class UserRepositoryImpl implements UserRepository {
 
 		try {
 			JDBCConnection connection = holubSqlConfig.getConnection();
-			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-
-			ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM user WHERE name = '%s'", name));
+//			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
+			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM user WHERE name = ?");
+			pstmt.setString(1, name);
+			ResultSet rs = pstmt.executeQuery();
+//			ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM user WHERE name = '%s'", name));
 			rs.next();
 			UserEntity user = UserEntity.builder()
 				.userId(rs.getLong("userId"))
 				.name(rs.getString("name"))
 				.build();
-			stmt.close();
+//			stmt.close();
+			pstmt.close();
 
 			connection.close();
 

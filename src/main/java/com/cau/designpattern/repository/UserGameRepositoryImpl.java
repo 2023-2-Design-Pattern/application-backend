@@ -1,5 +1,6 @@
 package com.cau.designpattern.repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -36,12 +37,16 @@ public class UserGameRepositoryImpl implements UserGameRepository {
 			JDBCConnection connection = holubSqlConfig.getConnection();
 
 			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-			ResultSet rs = stmt.executeQuery(
-				String.format("SELECT * FROM userGame WHERE userId = %d ORDER BY gameBoardId DESC, status DESC",
-					userId));
+			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM userGame WHERE userId = ? ORDER BY gameBoardId DESC, status DESC");
+			pstmt.setLong(1, userId);
+			ResultSet rs = pstmt.executeQuery();
+//			ResultSet rs = stmt.executeQuery(
+//				String.format("SELECT * FROM userGame WHERE userId = %d ORDER BY gameBoardId DESC, status DESC",
+//					userId));
 			rs.next();
 			long lastGameBoardId = rs.getLong("gameBoardId");
 			stmt.close();
+			pstmt.close();
 
 			connection.close();
 
@@ -77,9 +82,13 @@ public class UserGameRepositoryImpl implements UserGameRepository {
 			JDBCConnection connection = holubSqlConfig.getConnection();
 
 			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-			ResultSet rs = stmt.executeQuery(
-				String.format("SELECT * FROM userGame WHERE userId = %d AND gameBoardId = %d AND status = 0)", userId,
-					gameBoardId));
+			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM userGame WHERE userId = ? AND gameBoardId = ? AND status = 0)");
+			pstmt.setLong(1, userId);
+			pstmt.setLong(2, gameBoardId);
+			ResultSet rs = pstmt.executeQuery();
+//			ResultSet rs = stmt.executeQuery(
+//				String.format("SELECT * FROM userGame WHERE userId = %d AND gameBoardId = %d AND status = 0)", userId,
+//					gameBoardId));
 			rs.next();
 			UserGameEntity userGame = UserGameEntity.builder()
 				.userGameId(rs.getLong("userGameId"))
@@ -89,6 +98,7 @@ public class UserGameRepositoryImpl implements UserGameRepository {
 				.health(rs.getInt("health"))
 				.build();
 			stmt.close();
+			pstmt.close();
 
 			connection.close();
 
@@ -152,9 +162,14 @@ public class UserGameRepositoryImpl implements UserGameRepository {
 			JDBCConnection connection = holubSqlConfig.getConnection();
 
 			JDBCStatement stmt = (JDBCStatement)connection.createStatement();
-			stmt.executeUpdate(
-				String.format("UPDATE userGame SET status = %d WHERE userGameId = %d", status, userGameId));
-			stmt.close();
+			PreparedStatement pstmt = connection.prepareStatement("UPDATE userGame SET status = ? WHERE userGameId = ?");
+			pstmt.setInt(1, status);
+			pstmt.setLong(2, userGameId);
+//			stmt.executeUpdate(
+//				String.format("UPDATE userGame SET status = %d WHERE userGameId = %d", status, userGameId));
+//			stmt.close();
+			pstmt.executeUpdate();
+			pstmt.close();
 
 			connection.close();
 		} catch (Exception e) {
